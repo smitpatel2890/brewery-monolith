@@ -21,7 +21,9 @@ import guru.sfg.brewery.web.model.BeerStyleEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 
+import javax.persistence.LockModeType;
 import java.util.UUID;
 
 /**
@@ -30,6 +32,9 @@ import java.util.UUID;
 public interface BeerRepository extends JpaRepository<Beer, UUID> {
     
     Page<Beer> findAllByBeerName(String beerName, Pageable pageable);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Beer findOneById(UUID id);
 
     Page<Beer> findAllByBeerStyle(BeerStyleEnum beerStyle, Pageable pageable);
 
